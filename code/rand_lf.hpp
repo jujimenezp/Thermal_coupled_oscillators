@@ -69,8 +69,9 @@ void lf_integrator::update_v1(std::vector<particle> &particles){
 }
 
 void lf_integrator::impulse_Dv(std::vector<particle> &particles, gsl_rng *r){
-    double eta=gsl_ran_gaussian(r,1.);
+    double eta;
     for(auto &p: particles){
+        eta=gsl_ran_gaussian(r,1.);
         p.Dvx = -f*p.vx + sqrt(f*(2-f)*T)*eta;
     }
 }
