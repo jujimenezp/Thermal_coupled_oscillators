@@ -16,7 +16,7 @@ int main(int argc, char** argv){
     //osc.update_F(bs,k);
     osc.initialize_v(bs);
 
-    std::ofstream file("results/trajectories.dat");
+    std::ofstream file("results/oscillator.dat");
     //file <<"t" << "\tx" << "\tvx" <<"\n";
     for(double t=0; t < t_end; t+=dt){
         //osc.update_F(bs,k);
@@ -27,11 +27,11 @@ int main(int argc, char** argv){
                 //file <<"\t"<< bs[i].x <<"\t"<< bs[i].vx;
             }
         file << "\n";
+        }
         osc.update_v1(bs);
         osc.impulse_Dv(bs, r);
         osc.update_x(bs);
         osc.update_v2(bs);
-        }
     }
     file.close();
     gsl_rng_free(r);
