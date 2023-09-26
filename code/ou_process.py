@@ -15,13 +15,13 @@ def gaussian(x, mean, amplitude, variance):
 def expo(t, y0, gamma):
     return y0*np.exp(-gamma*t)
 
-def f_sigma(t, gamma, b):
-    return np.sqrt((b**2/gamma)*(1-np.exp(-2*gamma*t)))
+def f_sigma(t, gamma, A):
+    return np.sqrt(A*(1-np.exp(-2*gamma*t)))
 
 bins = int(sys.argv[1])
 fig, ax = plt.subplots(1,3, layout='tight')
 fig2, ax2 = plt.subplots(1,3, layout='tight')
-data = pd.read_csv('results/ou_process_r0.1.dat', header=None, delimiter='\t')
+data = pd.read_csv('results/prueba_r0.01.dat', header=None, delimiter='\t')
 
 t=data.iloc[:,0]
 avg = []
@@ -31,21 +31,21 @@ for i in range(len(t+1)):
     vx = data.iloc[i,1:]
     bin_heights, bin_borders = np.histogram(vx,bins)
     bin_centers = bin_borders[:-1] +np.diff(bin_borders)/2
-    try:
-        popt, pcov = curve_fit(gaussian, bin_centers, bin_heights, [5,10,1])
-    except:
-        print(f'Not using gaussian for t={i} in gamma=0.1')
-        popt=[]; pcov=[]
-        popt.append(np.average(vx))
-        popt.append(np.std(vx))
+    # try:
+    #     popt, pcov = curve_fit(gaussian, bin_centers, bin_heights, [5,100,2])
+    # except:
+    #     print(f'Not using gaussian for t={i} in gamma=0.1')
+    popt=[]; pcov=[]
+    popt.append(np.average(vx))
+    popt.append(np.var(vx))
     avg.append(popt[0])
     sigma.append(np.sqrt(popt[1]))
 
 parms, parms_cov = curve_fit(expo, t, avg)
-print('\ngamma=1.0')
+print('\ngamma=0.1')
 print(parms)
 print(parms_cov)
-t_fit = np.linspace(0,100,1000)
+t_fit = np.linspace(0,250,1000)
 v_fit = expo(t_fit,parms[0],parms[1])
 
 ax[0].set_title(r'$\gamma=0.1$')
@@ -62,13 +62,16 @@ ax[0].legend(loc='upper right', fontsize=8)
 parms2, parms_cov2 = curve_fit(f_sigma, t, sigma)
 print(f'\n{parms2}')
 print(parms_cov2)
-t_fit = np.linspace(0,100,1000)
+t_fit = np.linspace(0,250,1000)
 sigma_fit = f_sigma(t_fit,parms2[0], parms2[1])
 ax2[0].grid()
 ax2[0].scatter(t,sigma,s=1,color='black')
 ax2[0].plot(t_fit,sigma_fit)
 
-data = pd.read_csv('results/ou_process_r0.5.dat', delimiter='\t')
+
+
+
+data = pd.read_csv('results/prueba_r0.05.dat', header=None, delimiter='\t')
 
 t=data.iloc[:,0]
 avg = []
@@ -78,21 +81,21 @@ for i in range(len(t+1)):
     vx = data.iloc[i,1:]
     bin_heights, bin_borders = np.histogram(vx,bins)
     bin_centers = bin_borders[:-1] +np.diff(bin_borders)/2
-    try:
-        popt, pcov = curve_fit(gaussian, bin_centers, bin_heights, [5,10,1])
-    except:
-        print(f'Not using gaussian for t={i} in gamma=0.5')
-        popt=[]; pcov=[]
-        popt.append(np.average(vx))
-        popt.append(np.std(vx))
+    # try:
+    #     popt, pcov = curve_fit(gaussian, bin_centers, bin_heights, [5,10,2])
+    # except:
+    #     print(f'Not using gaussian for t={i} in gamma=0.5')
+    popt=[]; pcov=[]
+    popt.append(np.average(vx))
+    popt.append(np.var(vx))
     avg.append(popt[0])
     sigma.append(np.sqrt(popt[1]))
 
 parms, parms_cov = curve_fit(expo, t, avg)
-print('\ngamma=1.0')
+print('\ngamma=0.5')
 print(parms)
 print(parms_cov)
-t_fit = np.linspace(0,100,1000)
+t_fit = np.linspace(0,200,1000)
 v_fit = expo(t_fit,parms[0],parms[1])
 
 ax[1].set_title(r'$\gamma=0.5$')
@@ -110,13 +113,16 @@ ax[1].legend(loc='upper right', fontsize=8)
 parms2, parms_cov2 = curve_fit(f_sigma, t, sigma)
 print(f'\n{parms2}')
 print(parms_cov2)
-t_fit = np.linspace(0,100,1000)
+t_fit = np.linspace(0,200,1000)
 sigma_fit = f_sigma(t_fit,parms2[0], parms2[1])
 ax2[1].grid()
 ax2[1].scatter(t,sigma,s=1,color='black')
 ax2[1].plot(t_fit,sigma_fit)
 
-data = pd.read_csv('results/ou_process_r1.dat', delimiter='\t')
+
+
+
+data = pd.read_csv('results/prueba_r0.1.dat', header=None, delimiter='\t')
 
 t=data.iloc[:,0]
 avg = []
@@ -126,13 +132,13 @@ for i in range(len(t+1)):
     vx = data.iloc[i,1:]
     bin_heights, bin_borders = np.histogram(vx,bins)
     bin_centers = bin_borders[:-1] +np.diff(bin_borders)/2
-    try:
-        popt, pcov = curve_fit(gaussian, bin_centers, bin_heights, [5,10,1])
-    except:
-        print(f'Not using gaussian for t={i} in gamma=1')
-        popt=[]; pcov=[]
-        popt.append(np.average(vx))
-        popt.append(np.std(vx))
+    #try:
+    #    popt, pcov = curve_fit(gaussian, bin_centers, bin_heights, [5,10,2])
+    #except:
+    #    print(f'Not using gaussian for t={i} in gamma=1')
+    popt=[]; pcov=[]
+    popt.append(np.average(vx))
+    popt.append(np.var(vx))
     avg.append(popt[0])
     sigma.append(np.sqrt(popt[1]))
 
