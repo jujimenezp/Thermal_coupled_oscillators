@@ -4,13 +4,13 @@ CXXFLAGS=-std=c++20 -Wall -lgsl
 .PHONY: graph
 .PRECIOUS: %.x
 
-all: rand_lf.x
+all: rand_lf.x coupled.x
 
 rand_lf.x: code/rand_lf.cpp code/rand_lf.hpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
-graph: rand_lf.x results/hay.dat results/no_hay.dat
-	code/graph.py
+coupled.x: code/coupled.cpp code/coupled.hpp
+	$(CXX) $(CXXFLAGS) $< -o $@
 
 clean:
 	@find . -type f -name "*.dat" -delete

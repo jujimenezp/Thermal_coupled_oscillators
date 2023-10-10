@@ -52,7 +52,7 @@ ax[0].set_title(r'$\gamma=0.01$')
 ax[0].grid()
 ax[0].set_xlabel('Time')
 ax[0].set_ylabel('Velocity')
-ax[0].scatter(t, avg, s=1, color='black', label='Datos')
+ax[0].scatter(t, avg, s=1, color='black', label='Data')
 textstr=(r'$\sigma=\sqrt{k_B T(1-e^{-2\gamma t})}$'
          '\n'
          r'$\gamma = 0.01021\pm 0.00001$')
