@@ -3,14 +3,20 @@
 int main(int argc, char** argv){
     double t_end=std::stod(argv[3]), dt=std::stod(argv[2]);
     int t_imp=5;
-    double k=4, f=1-exp(-dt*6), T=1;
-    double c_x0=-5, c_x1=5;
+    double k=4, f=1-exp(-dt*4.01), T=1./4;
+    double x0=-11, x1=11;
+    double c_x0=-10, c_x1=10;
 
     bool bonded=false;
-    double thres_bond=0.8, thres_unbond=2, dist, F;
+    double thres_bond=4, thres_unbond=4, dist, F;
+
+    double interval = t_end/16;
+    double interval2 = t_end-interval;
+    double sep = 2;
+
 
     // particle(double Ri, double xi, double c_xi, double yi, double c_yi, double vxi, double vyi, double Fxi, double Fyi)
-    std::vector<particle> bs{particle(3, -6, c_x0, 0, 0, 0, 0, 0, 0), particle(3, 6, c_x1, 0, 0, 0, 0, 0, 0)};
+    std::vector<particle> bs{particle(3, x0, c_x0, 0, 0, 0, 0, 0, 0), particle(3, x1, c_x1, 0, 0, 0, 0, 0, 0)};
     double SEED=std::stoi(argv[1]);
     gsl_rng * r = gsl_rng_alloc(gsl_rng_mt19937);
     gsl_rng_set(r,SEED);
@@ -39,8 +45,15 @@ int main(int argc, char** argv){
         osc.update_x(bs);
         osc.update_v2(bs);
 
-        bs[0].c_x = c_x0 + t*0.1;
-        bs[1].c_x = c_x1 + -t*0.1;
+        //Protocols
+        if(t <= interval){
+            bs[0].c_x = c_x0 - t*(c_x0+sep/2)/interval;
+            bs[1].c_x = c_x1 - t*(c_x1-sep/2)/interval;
+        }
+        else if(t > interval2){
+            bs[0].c_x = -sep/2 + (t-interval2)*(c_x0+sep/2)/interval;
+            bs[1].c_x = sep/2 + (t-interval2)*(c_x1-sep/2)/interval;
+        }
     }
     file.close();
     gsl_rng_free(r);

@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 data = pd.read_csv('results/coupled.dat', delimiter='\t')
 print(data)
 fig,ax = plt.subplots()
+ax.grid()
 # ax.set_title(r'Trajectories')
 # ax.set_xlabel('Time')
 # ax.set_ylabel('Position')
