@@ -19,10 +19,11 @@ class particle{
         double vx,vy;
         double Dvx, Dvy;
         double Fx,Fy;
+        double W;
 
         particle(double Ri, double xi, double c_xi, double yi, double c_yi, double vxi, double vyi,
                  double Fxi, double Fyi)
-        {R=Ri; x=xi; c_x=c_xi; y=yi; c_y=c_yi; vx=vxi; vy=vyi; Fx=Fxi; Fy=Fyi; Dvx=0; Dvy=0;}
+        {R=Ri; x=xi; c_x=c_xi; y=yi; c_y=c_yi; vx=vxi; vy=vyi; Fx=Fxi; Fy=Fyi; Dvx=0; Dvy=0; W=0;}
         void reset_F(){Fx=Fy=0;}
         void add_F(double Fx0, double Fy0);
 };
@@ -43,9 +44,13 @@ class lf_integrator{
         void update_F(std::vector<particle> &particles, double k);
         void update_v1(std::vector<particle> &particles);
         void impulse_Dv(std::vector<particle> &particles, gsl_rng *r);
-        void update_x(std::vector<particle> &particles);
+        void update_x(std::vector<particle> &particles, double k);
         void update_v2(std::vector<particle> &particles);
         void check_bonded(std::vector<particle> &particles, double k, double thres_bond, double thres_unbond);
+        double x_avg(std::vector<particle> &particles);
+        double x_std(std::vector<particle> &particles);
+        double vx_avg(std::vector<particle> &particles);
+        double vx_std(std::vector<particle> &particles);
 };
 
 void lf_integrator::initialize_v(std::vector<particle> &particles){
@@ -79,10 +84,14 @@ void lf_integrator::impulse_Dv(std::vector<particle> &particles, gsl_rng *r){
     }
 }
 
-void lf_integrator::update_x(std::vector<particle> &particles){
+void lf_integrator::update_x(std::vector<particle> &particles, double k){
+    double dx, dy;
     for(auto &p: particles){
-        p.x += dt*(p.vx+0.5*p.Dvx);
-        p.y += dt*(p.vy+0.5*p.Dvy);
+        dx = dt*(p.vx+0.5*p.Dvx);
+        dy = dt*(p.vy+0.5*p.Dvy);
+        p.x += dx;
+        p.y += dy;
+        p.W += -k*(p.x-p.c_x)*dx;
     }
 }
 
@@ -110,6 +119,46 @@ void lf_integrator::check_bonded(std::vector<particle> &particles, double k, dou
         else if(fabs(dist) > thres_unbond && bonded==true){
             bonded=false;
         }
+}
+
+double lf_integrator::x_avg(std::vector<particle> &particles){
+    double avg=0;
+    for(auto &p: particles){
+        avg+=p.x;
+    }
+    avg /= particles.size();
+    return avg;
+}
+
+double lf_integrator::x_std(std::vector<particle> &particles){
+    double avg=this->x_avg(particles);
+    double std=0;
+    for(auto &p: particles){
+        std+=pow((p.x-avg),2);
+    }
+    std /= particles.size()-1;
+    std = sqrt(std);
+    return std;
+}
+
+double lf_integrator::vx_avg(std::vector<particle> &particles){
+    double avg=0;
+    for(auto &p: particles){
+        avg+=p.vx;
+    }
+    avg /= particles.size();
+    return avg;
+}
+
+double lf_integrator::vx_std(std::vector<particle> &particles){
+    double avg=this->vx_avg(particles);
+    double std=0;
+    for(auto &p: particles){
+        std+=pow((p.vx-avg),2);
+    }
+    std /= particles.size()-1;
+    std = sqrt(std);
+    return std;
 }
 
 #endif // RAND_LF_H_

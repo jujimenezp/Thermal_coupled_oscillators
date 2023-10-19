@@ -4,7 +4,11 @@ CXXFLAGS=-std=c++20 -Wall -lgsl
 .PHONY: graph
 .PRECIOUS: %.x
 
-all: rand_lf.x coupled.x
+all: coupled
+
+coupled: coupled.x code/work.py
+	./coupled.x 3 0.001 1000
+	python code/work.py
 
 rand_lf.x: code/rand_lf.cpp code/rand_lf.hpp
 	$(CXX) $(CXXFLAGS) $< -o $@
