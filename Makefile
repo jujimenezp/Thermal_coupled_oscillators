@@ -7,8 +7,8 @@ CXXFLAGS=-std=c++20 -Wall -lgsl
 all: coupled
 
 coupled: coupled.x code/work.py
-	./coupled.x 2 0.001 1000
-	python code/work.py
+	./coupled.x 51 0.001 1000
+	python code/avg_work.py
 
 rand_lf.x: code/rand_lf.cpp code/rand_lf.hpp
 	$(CXX) $(CXXFLAGS) $< -o $@

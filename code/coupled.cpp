@@ -10,13 +10,9 @@ int main(int argc, char** argv){
     double sep = 18;
     double x0=-(k*c_x[1]+2*k_coupled*thres_bond/2)/(k+2*k_coupled), x1=(k*c_x[1]+2*k_coupled*thres_bond/2)/(k+2*k_coupled);
 
-<<<<<<< Updated upstream
     double v[2] = {-3000./4800, 3000./4800};
     double t_eq = 300;
-=======
-    double v[2] = {-3000./4800,3000./4800};
-    double t_eq = 50;
->>>>>>> Stashed changes
+
     double t1 = (-sep/2 - c_x[0])/v[0] + t_eq;
 
     double W1=0, c_x_prev=0;
