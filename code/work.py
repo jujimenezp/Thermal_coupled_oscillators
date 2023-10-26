@@ -23,7 +23,7 @@ ax[1].plot(data_w.iloc[:,0],data_w.iloc[:,1], linewidth=0.5)
 ax[2].plot(data_w.iloc[:,0],data_w.iloc[:,2], linewidth=0.5)
 
 ax[0].grid()
-ax[0].set_xticks(np.arange(0, 10000+1, 1000))
+ax[0].set_xticks(np.arange(0, 1000+1, 100))
 ax[0].set_yticks(np.arange(-10, 10+1, 1.0))
 ax[0].set_xlabel('Time')
 ax[0].set_ylabel('Position')

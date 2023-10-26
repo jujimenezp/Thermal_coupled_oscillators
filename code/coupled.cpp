@@ -10,8 +10,8 @@ int main(int argc, char** argv){
     double thres_bond=12, thres_unbond=12;
     double sep = 18;
 
-    double v[2] = {-7./3500, 7./3500};
-    double t_eq = 1000;
+    double v[2] = {-3000./4800, 3000./4800};
+    double t_eq = 300;
     double t1 = (-sep/2 - c_x[0])/v[0] + t_eq;
 
     double W1=0, c_x_prev=0;
