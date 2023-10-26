@@ -20,10 +20,10 @@ for i in range(len(data_pos.columns)-1):
     ax[0].plot(data_pos.iloc[:,0],data_pos.iloc[:,i+1], linewidth=0.5)
 ax[1].plot(data_w.iloc[:,0],data_w.iloc[:,1], linewidth=0.5)
 #ax[1].plot(data_w.iloc[:,3],data_w.iloc[:,4], linewidth=0.5)
-ax[2].plot(data_pos.iloc[:,0],data_w.iloc[:,5], linewidth=0.5)
+ax[2].plot(data_w.iloc[:,0],data_w.iloc[:,2], linewidth=0.5)
 
 ax[0].grid()
-ax[0].set_xticks(np.arange(0, 1000+1, 100))
+ax[0].set_xticks(np.arange(0, 10000+1, 1000))
 ax[0].set_yticks(np.arange(-10, 10+1, 1.0))
 ax[0].set_xlabel('Time')
 ax[0].set_ylabel('Position')
@@ -34,7 +34,7 @@ ax[1].set_xlabel('Center position')
 ax[1].set_ylabel('Spring Force')
 
 ax[2].grid()
-ax[2].set_xlabel('Time')
+ax[2].set_xlabel('Center Position')
 ax[2].set_ylabel('Work')
 
 

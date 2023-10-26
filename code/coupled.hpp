@@ -107,12 +107,12 @@ void lf_integrator::check_bonded(std::vector<particle> &particles, double k, dou
     double F;
         if(fabs(dist) <= thres_bond){
             bonded=true;
-            F = -k*dist;
+            F = -k*(dist-thres_bond);
             particles[1].add_F(F,0);
             particles[0].add_F(-F,0);
         }
         else if(fabs(dist) <= thres_unbond && bonded==true){
-            F = -k*dist;
+            F = -k*(dist-thres_bond);
             particles[1].add_F(F,0);
             particles[0].add_F(-F,0);
         }
