@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv){
     double t_end=std::stod(argv[3]), dt=std::stod(argv[2]);
-    int t_imp=5, N=50;;
+    int t_imp=5, N=1000;
     double k=4, k_coupled=4, f=1-exp(-dt*4.001), T=4;
     double c_x[2]={-3, 3};
 
@@ -10,8 +10,8 @@ int main(int argc, char** argv){
     double sep = 18;
     double x0=-(k*c_x[1]+2*k_coupled*thres_bond/2)/(k+2*k_coupled), x1=(k*c_x[1]+2*k_coupled*thres_bond/2)/(k+2*k_coupled);
 
-    double v[2] = {-3000./4800, 3000./4800};
-    double t_eq = 300;
+    double v[2] = {-6./4800, 6./4800};
+    double t_eq = 100;
 
     double t1 = (-sep/2 - c_x[0])/v[0] + t_eq;
 
@@ -19,6 +19,8 @@ int main(int argc, char** argv){
 
     //std::ofstream file("results/coupled_pos.dat");
     //std::ofstream file2("results/coupled_w.dat");
+    std::ofstream file("results/hist_work_v6_4800.dat");
+
     std::vector<double> Fs(t_end/dt,0);
     std::vector<double> Ws(t_end/dt,0);
     std::vector<double> x_cs(t_end/dt,c_x[0]);
@@ -70,21 +72,32 @@ int main(int argc, char** argv){
             W1 += -k*(bs[0].x-bs[0].c_x)*(bs[0].c_x-c_x_prev);
 
             if(int(t/dt)%t_imp == 0){
-                Fs[floor(t/(dt*t_imp))] += -k*(bs[0].x-bs[0].c_x)/N;
-                Ws[floor(t/(dt*t_imp))] += W1/N;
+                Fs[floor(t/(dt*t_imp))] += -k*(bs[0].x-bs[0].c_x);
+                Ws[floor(t/(dt*t_imp))] += W1;
                 x_cs[floor(t/(dt*t_imp))] = bs[0].c_x;
             }
+
+            if(floor(t/dt) == floor((t_eq+2400.)/dt)){
+                file << W1 <<"\t";
+            }
+            else if(floor(t/dt) == floor(5000./dt)){
+                file << W1 <<"\t";
+            }
+            else if(floor(t/dt) == floor(9950./dt)){
+                file << W1 <<"\n";
+            }
+
         }
         gsl_rng_free(r);
     }
-    //file.close();
+    file.close();
     //file2.close();
 
-    std::ofstream file("results/avg_w.dat");
+    std::ofstream avg_file("results/avg_w.dat");
     for(int i=0; i < Ws.size(); i++){
-        file << x_cs[i] << "\t" <<Fs[i] << "\t" <<Ws[i] << "\n";
+        avg_file << x_cs[i] << "\t" <<Fs[i]/N << "\t" <<Ws[i]/N << "\n";
     }
-    file.close();
+    avg_file.close();
 
     return 0;
 }
