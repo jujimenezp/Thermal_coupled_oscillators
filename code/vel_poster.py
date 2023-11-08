@@ -35,11 +35,8 @@ for i in range(len(t+1)):
     #     popt, pcov = curve_fit(gaussian, bin_centers, bin_heights, [5,100,2])
     # except:
     #     print(f'Not using gaussian for t={i} in gamma=0.1')
-    popt=[]; pcov=[]
-    popt.append(np.average(vx))
-    popt.append(np.var(vx))
-    avg.append(popt[0])
-    sigma.append(np.sqrt(popt[1]))
+    avg.append(np.average(vx))
+    sigma.append(np.std(vx))
 
 parms, parms_cov = curve_fit(expo, t, avg)
 print('\ngamma=0.01')
@@ -50,12 +47,12 @@ v_fit = expo(t_fit,parms[0],parms[1])
 
 ax[0,0].set_title(r'$\gamma=0.01$')
 ax[0,0].grid()
-ax[0,0].set_xlabel('Time')
-ax[0,0].set_ylabel('Velocity')
-ax[0,0].scatter(t, avg, s=1, color='black', label='Data')
+ax[0,0].set_xlabel('Tiempo')
+ax[0,0].set_ylabel('Promedio de Velocidad')
+ax[0,0].scatter(t, avg, s=1, color='black', label='Datos')
 textstr=(r'$v=v_0 e^{-\gamma t}$'
          '\n'
-         r'$\gamma = 0.01021\pm 0.00001$')
+         r'$\gamma = 0.01005\pm 0.00001$')
 ax[0,0].plot(t_fit,v_fit,color='red',label=textstr)
 ax[0,0].legend(loc='upper right', fontsize=8)
 
@@ -65,8 +62,8 @@ print(parms_cov2)
 t_fit = np.linspace(0,250,1000)
 sigma_fit = f_sigma(t_fit,parms2[0], parms2[1])
 ax[1,0].grid()
-ax[1,0].set_xlabel('Time')
-ax[1,0].set_ylabel('Velocity Standard Deviation')
+ax[1,0].set_xlabel('Tiempo')
+ax[1,0].set_ylabel('Desviación Estándar de Velocidad')
 textstr=(r'$\sigma_v=\sqrt{k_B T(1-e^{-2\gamma t})}$'
          '\n'
          r'$\gamma = 0.01021\pm 0.00001$'
@@ -93,11 +90,8 @@ for i in range(len(t+1)):
     #     popt, pcov = curve_fit(gaussian, bin_centers, bin_heights, [5,10,2])
     # except:
     #     print(f'Not using gaussian for t={i} in gamma=0.5')
-    popt=[]; pcov=[]
-    popt.append(np.average(vx))
-    popt.append(np.var(vx))
-    avg.append(popt[0])
-    sigma.append(np.sqrt(popt[1]))
+    avg.append(np.average(vx))
+    sigma.append(np.std(vx))
 
 parms, parms_cov = curve_fit(expo, t, avg)
 print('\ngamma=0.05')
@@ -108,10 +102,10 @@ v_fit = expo(t_fit,parms[0],parms[1])
 
 ax[0,1].set_title(r'$\gamma=0.05$')
 ax[0,1].grid()
-ax[0,1].set_xlabel('Time')
-ax[0,1].set_ylabel('Velocity')
+ax[0,1].set_xlabel('Tiempo')
+#ax[0,1].set_ylabel('Promedio de Velocidad')
 #ax[0,1].set_xlim(0,40)
-ax[0,1].scatter(t, avg, s=1, color='black', label='Data')
+ax[0,1].scatter(t, avg, s=1, color='black', label='Datos')
 textstr=(r'$v=v_0 e^{-\gamma t}$'
          '\n'
          r'$\gamma = 0.05036\pm 0.00001$')
@@ -124,8 +118,8 @@ print(parms_cov2)
 t_fit = np.linspace(0,200,1000)
 sigma_fit = f_sigma(t_fit,parms2[0], parms2[1])
 ax[1,1].grid()
-ax[1,1].set_xlabel('Time')
-ax[1,1].set_ylabel('Velocity Standard Deviation')
+ax[1,1].set_xlabel('Tiempo')
+#ax[1,1].set_ylabel('Desviación Estándar de Velocidad')
 textstr=(r'$\sigma_v=\sqrt{k_B T(1-e^{-2\gamma t})}$'
          '\n'
          r'$\gamma = 0.05086\pm 0.00008$'
@@ -135,4 +129,4 @@ ax[1,1].scatter(t,sigma,s=0.5,color='black')
 ax[1,1].plot(t_fit,sigma_fit, label=textstr)
 ax[1,1].legend(loc='lower right', fontsize=7)
 
-fig.savefig('results/vel_poster.png',format='png',bbox_inches='tight',dpi=450)
+fig.savefig('results/vel_poster1.png',format='png',bbox_inches='tight',dpi=600)

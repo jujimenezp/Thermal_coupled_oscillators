@@ -3,7 +3,7 @@
 int main(int argc, char** argv){
     double t_end=std::stod(argv[3]), dt=std::stod(argv[2]);
     int t_imp=5;
-    double k=4, f=1-exp(-dt*4), T=16;
+    double k=4, f=1-exp(-dt*4), T=1;
     // particle(double Ri, double xi, double yi, double vxi, double vyi, double Fxi, double Fyi)
     //particle b(3, 0, 0, 0, 0, 0, 0);
     std::vector<particle> bs = {5000, particle(3, 10, 0, 0, 0, 0, 0)};
@@ -13,10 +13,10 @@ int main(int argc, char** argv){
 
     // lf_integrator(double dti, double fi, double Ti)
     lf_integrator osc(dt,f,T);
-    osc.update_F(bs,k);
+    //osc.update_F(bs,k);
     osc.initialize_v(bs);
 
-    std::ofstream file("results/overdamped.dat");
+    std::ofstream file("results/pos_dist.dat");
     //file <<"t" << "\tx" << "\tvx" <<"\n";
     for(double t=0; t < t_end; t+=dt){
         if(int(t/dt)%t_imp == 0){
@@ -27,7 +27,7 @@ int main(int argc, char** argv){
             }
         file << "\n";
         }
-        osc.update_F(bs,k);
+        //osc.update_F(bs,k);
         osc.update_v1(bs);
         osc.impulse_Dv(bs, r);
         osc.update_x(bs);

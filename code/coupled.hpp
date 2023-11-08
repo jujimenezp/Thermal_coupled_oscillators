@@ -119,6 +119,11 @@ void lf_integrator::check_bonded(std::vector<particle> &particles, double k, dou
         else if(fabs(dist) > thres_unbond && bonded==true){
             bonded=false;
         }
+        else if(fabs(dist) > thres_unbond+2 && bonded==false){
+            F = -k*(dist-thres_bond-4);
+            particles[1].add_F(F,0);
+            particles[0].add_F(-F,0);
+        }
 }
 
 double lf_integrator::x_avg(std::vector<particle> &particles){
