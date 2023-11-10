@@ -14,39 +14,27 @@ def gaussian(x,avg,variance,A):
     return y
 
 bins = int(sys.argv[1])
-data_un_eq = pd.read_csv("results/crooks_un_eq.dat", delimiter='\t', header=None).iloc[:,0]
-data_re_eq = pd.read_csv("results/crooks_re_eq.dat", delimiter='\t', header=None).iloc[:,0]
+names = ['v5_48', 'v10_48', 'v30_48']
+colors = ['blue', 'red', 'green', 'orange', 'violet', 'yellow']
 
-data_un_5_48 = pd.read_csv("results/crooks_un_v5_48.dat", delimiter='\t', header=None).iloc[:,0]
-data_re_5_48 = pd.read_csv("results/crooks_re_v5_48.dat", delimiter='\t', header=None).iloc[:,0]
+data_un = []
+data_re = []
+avg_un = []
+avg_re = []
+var_un = []
+var_re = []
 
-data_un_10_48 = pd.read_csv("results/crooks_un_v10_48.dat", delimiter='\t', header=None).iloc[:,0]
-data_re_10_48 = pd.read_csv("results/crooks_re_v10_48.dat", delimiter='\t', header=None).iloc[:,0]
+for i in range(len(names)):
+    data_un.append(pd.read_csv('results/crooks_un_'+names[i]+'.dat', delimiter='t', header=None).iloc[:,0])
+    data_re.append(pd.read_csv('results/crooks_re_'+names[i]+'.dat', delimiter='t', header=None).iloc[:,0])
+    avg_un.append(np.average(data_un[i]))
+    avg_re.append(np.average(data_re[i]))
+    var_un.append(np.var(data_un[i]))
+    var_re.append(np.var(data_re[i]))
 
-data_un_30_48 = pd.read_csv("results/crooks_un_v30_48.dat", delimiter='\t', header=None).iloc[:,0]
-data_re_30_48 = pd.read_csv("results/crooks_re_v30_48.dat", delimiter='\t', header=None).iloc[:,0]
+x=np.arange(-30,60,0.1)
 
-avg_un_eq = np.average(data_un_eq)
-avg_re_eq = np.average(data_re_eq)
-avg_un_v5 = np.average(data_un_5_48)
-avg_re_v5 = np.average(data_re_5_48)
-avg_un_v10 = np.average(data_un_10_48)
-avg_re_v10 = np.average(data_re_10_48)
-avg_un_v30 = np.average(data_un_30_48)
-avg_re_v30 = np.average(data_re_30_48)
-
-var_un_eq = np.var(data_un_eq)
-var_re_eq = np.var(data_re_eq)
-var_un_v5 = np.var(data_un_5_48)
-var_re_v5 = np.var(data_re_5_48)
-var_un_v10 = np.var(data_un_10_48)
-var_re_v10 = np.var(data_re_10_48)
-var_un_v30 = np.var(data_un_30_48)
-var_re_v30 = np.var(data_re_30_48)
-
-x=np.arange(-5,35,0.1)
-
-heights=[0,1]
+heights=[]
 borders=[]
 
 fig, ax = plt.subplots(layout='tight')
@@ -54,36 +42,16 @@ fig, ax = plt.subplots(layout='tight')
 ax.grid
 ax.set_title('Work Histogram')
 ax.set_xlabel('Work')
-# bin_heights, bin_borders,_ = ax.hist(data_un_eq, bins, label='Unfolding', color='blue', histtype='step')
-# heights.append(bin_heights.max())
-# bin_heights, bin_borders,_=ax.hist(data_re_eq, bins, label='Refolding', color='red', histtype='step')
-# heights.append(bin_heights.max())
 
-bin_heights, bin_borders,_=ax.hist(data_un_5_48, bins, label='Unfolding v=5/48', color='green', histtype='step')
-heights.append(bin_heights.max())
-bin_heights, bin_borders,_=ax.hist(data_re_5_48, bins, label='Refolding v=5/48', color='orange', histtype='step')
-heights.append(bin_heights.max())
-
-bin_heights, bin_borders,_=ax.hist(data_un_10_48, bins, label='Unfolding v=10/48', color='violet', histtype='step')
-heights.append(bin_heights.max())
-bin_heights, bin_borders,_=ax.hist(data_re_10_48, bins, label='Refolding v=10/48', color='yellow', histtype='step')
-heights.append(bin_heights.max())
-
-bin_heights, bin_borders,_=ax.hist(data_un_30_48, bins, label='Unfolding v=30/48', color='blue', histtype='step')
-heights.append(bin_heights.max())
-bin_heights, bin_borders,_=ax.hist(data_re_30_48, bins, label='Refolding v=30/48', color='red', histtype='step')
-heights.append(bin_heights.max())
-
-
-#ax.plot(x,gaussian(x,avg_un_eq,var_un_eq,heights[0]), color='blue', linewidth=1)
-#ax.plot(x,gaussian(x,avg_re_eq,var_re_eq,heights[1]), color='red', linewidth=1)
-ax.plot(x,gaussian(x,avg_un_v5,var_un_v5,heights[2]), color='green', linewidth=1)
-ax.plot(x,gaussian(x,avg_re_v5,var_re_v5,heights[3]), color='orange', linewidth=1)
-ax.plot(x,gaussian(x,avg_un_v10,var_un_v10,heights[4]), color='violet', linewidth=1)
-ax.plot(x,gaussian(x,avg_re_v10,var_re_v10,heights[5]), color='yellow', linewidth=1)
-ax.plot(x,gaussian(x,avg_un_v30,var_un_v30,heights[6]), color='blue', linewidth=1)
-ax.plot(x,gaussian(x,avg_re_v30,var_re_v30,heights[7]), color='red', linewidth=1)
+for i in range(len(names)):
+    bin_heights, bin_borders,_ = ax.hist(data_un[i], bins, label=f'Unfolding {names[i]}', histtype='step', color=colors[2*i])
+    heights.append(bin_heights.max())
+    ax.plot(x,gaussian(x,avg_un[i],var_un[i],heights[2*i]), color=colors[2*i])
+    bin_heights, bin_borders,_ = ax.hist(data_re[i], bins, label=f'Refolding {names[i]}', histtype='step', color=colors[2*i+1])
+    heights.append(bin_heights.max())
+    ax.plot(x,gaussian(x,avg_re[i],var_re[i],heights[2*i+1]), color=colors[2*i+1])
 
 ax.legend()
 
-plt.show()
+#plt.show()
+plt.savefig('crooks.png', format='png', bbox_inches='tight', dpi=600)
