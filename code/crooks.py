@@ -14,7 +14,8 @@ def gaussian(x,avg,variance,A):
     return y
 
 bins = int(sys.argv[1])
-names = ['v5_48', 'v10_48', 'v30_48']
+names = ['v1_48','v5_48','v10_48','v20_48','v30_48']
+#names =['eq']
 colors = ['blue', 'red', 'green', 'orange', 'violet', 'yellow']
 
 data_un = []
@@ -31,27 +32,34 @@ for i in range(len(names)):
     avg_re.append(np.average(data_re[i]))
     var_un.append(np.var(data_un[i]))
     var_re.append(np.var(data_re[i]))
+print(avg_un[0])
+print(avg_re[0])
 
 x=np.arange(-30,60,0.1)
+x1 = np.arange(-30,60,2)
 
-heights=[]
+heights_un=[]
+heights_re=[]
 borders=[]
 
-fig, ax = plt.subplots(layout='tight')
+fig, ax = plt.subplots(1,2, layout='tight')
 
-ax.grid
-ax.set_title('Work Histogram')
-ax.set_xlabel('Work')
+ax[0].set_title('Work Histogram')
+ax[0].set_xlabel('Work')
+ax[1].grid()
 
 for i in range(len(names)):
-    bin_heights, bin_borders,_ = ax.hist(data_un[i], bins, label=f'Unfolding {names[i]}', histtype='step', color=colors[2*i])
-    heights.append(bin_heights.max())
-    ax.plot(x,gaussian(x,avg_un[i],var_un[i],heights[2*i]), color=colors[2*i])
-    bin_heights, bin_borders,_ = ax.hist(data_re[i], bins, label=f'Refolding {names[i]}', histtype='step', color=colors[2*i+1])
-    heights.append(bin_heights.max())
-    ax.plot(x,gaussian(x,avg_re[i],var_re[i],heights[2*i+1]), color=colors[2*i+1])
+    bin_heights, bin_borders_un,_ = ax[0].hist(data_un[i], bins, density=True, label=f'Unfolding {names[i]}', histtype='step', color=colors[i])
+    heights_un.append(bin_heights.max())
+    ax[0].plot(x,gaussian(x,avg_un[i],var_un[i],heights_un[i]), color=colors[i])
+    bin_heights, bin_borders_re,_ = ax[0].hist(data_re[i], bins, density=True, label=f'Refolding {names[i]}', histtype='step', color=colors[i], linestyle='--')
+    heights_re.append(bin_heights.max())
+    ax[0].plot(x,gaussian(x,avg_re[i],var_re[i],heights_re[i]), color=colors[i], linestyle='--')
+    y = np.log(gaussian(x1,avg_re[i],var_re[i],heights_re[i])/gaussian(x1,avg_un[i],var_un[i],heights_un[i]))
+    ax[1].scatter(x1,y,color=colors[i],s=2)
 
-ax.legend()
+ax[0].legend()
 
-#plt.show()
-plt.savefig('crooks.png', format='png', bbox_inches='tight', dpi=600)
+
+plt.show()
+#plt.savefig('results/crooks.png', format='png', bbox_inches='tight', dpi=600)

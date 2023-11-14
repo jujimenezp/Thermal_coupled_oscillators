@@ -39,5 +39,5 @@ ax[2].set_xlabel('Center Position')
 ax[2].set_ylabel('Work')
 
 
-#plt.show()
-plt.savefig('results/coupled_work.png',format='png',bbox_inches='tight',dpi=300)
+plt.show()
+#plt.savefig('results/coupled_work.png',format='png',bbox_inches='tight',dpi=300)

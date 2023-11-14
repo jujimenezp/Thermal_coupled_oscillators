@@ -46,7 +46,7 @@ class lf_integrator{
         void impulse_Dv(std::vector<particle> &particles, gsl_rng *r);
         void update_x(std::vector<particle> &particles, double k);
         void update_v2(std::vector<particle> &particles);
-        void check_bonded(std::vector<particle> &particles, double k, double thres_bond, double thres_unbond);
+        void check_bonded(std::vector<particle> &particles, double k, double thres_bond, double thres_unbond, double thres_bond2);
         double x_avg(std::vector<particle> &particles);
         double x_std(std::vector<particle> &particles);
         double vx_avg(std::vector<particle> &particles);
@@ -102,7 +102,7 @@ void lf_integrator::update_v2(std::vector<particle> &particles){
     }
 }
 
-void lf_integrator::check_bonded(std::vector<particle> &particles, double k, double thres_bond, double thres_unbond){
+void lf_integrator::check_bonded(std::vector<particle> &particles, double k, double thres_bond, double thres_unbond, double thres_bond2){
     double dist = particles[1].x-particles[0].x;
     double F;
         if(fabs(dist) <= thres_bond){
@@ -119,8 +119,8 @@ void lf_integrator::check_bonded(std::vector<particle> &particles, double k, dou
         else if(fabs(dist) > thres_unbond && bonded==true){
             bonded=false;
         }
-        else if(fabs(dist) > thres_unbond+2 && bonded==false){
-            F = -k*(dist-thres_bond-4);
+        if(fabs(dist) > thres_bond2 && bonded==false){
+            F = -k*(dist-thres_bond2);
             particles[1].add_F(F,0);
             particles[0].add_F(-F,0);
         }
