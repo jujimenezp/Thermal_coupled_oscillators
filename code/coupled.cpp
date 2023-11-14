@@ -2,15 +2,16 @@
 
 int main(int argc, char** argv){
     double t_end=std::stod(argv[3]), dt=std::stod(argv[2]);
-    int t_imp=50, N=50000;
-    double k=4, k_coupled=4, f=1-exp(-dt*4.001), T=4;
+    int t_imp=50, N=500;
+    double k=4, k_coupled=4, f=1-exp(-dt*6.92821), T=4;
     double c_x[2]={-3, 3};
 
-    double thres_bond=12, thres_unbond=12;
-    double sep = 18;
+    double thres_bond=12, thres_unbond=12, thres_bond2=16;
+    double sep = 26;
     double x0=-(k*c_x[1]+2*k_coupled*thres_bond/2)/(k+2*k_coupled), x1=(k*c_x[1]+2*k_coupled*thres_bond/2)/(k+2*k_coupled);
+    //double x0=-8, x1=8;
 
-    double v[2] = {-1./4800, 1./4800};
+    double v[2] = {-5./19800, 5./19800};
     double t_eq = 100;
 
     double t1 = (-sep/2 - c_x[0])/v[0] + t_eq;
@@ -53,7 +54,7 @@ int main(int argc, char** argv){
                 file << "\n"; file2 << "\n";
             }
             osc.update_F(bs,k);
-            osc.check_bonded(bs,k_coupled,thres_bond,thres_unbond);
+            osc.check_bonded(bs,k_coupled,thres_bond,thres_unbond,thres_bond2);
 
             osc.update_v1(bs);
             osc.impulse_Dv(bs, r);
@@ -94,7 +95,7 @@ int main(int argc, char** argv){
         }
 
         file_crooks_un << -W1 << "\n";
-        W1=0;
+        //W1=0;
 
         for(double t=t_end/2; t < t_end; t+=dt){
             if(i == 3 && int(t/dt)%t_imp == 0){
@@ -107,7 +108,7 @@ int main(int argc, char** argv){
                 file << "\n"; file2 << "\n";
             }
             osc.update_F(bs,k);
-            osc.check_bonded(bs,k_coupled,thres_bond,thres_unbond);
+            osc.check_bonded(bs,k_coupled,thres_bond,thres_unbond, thres_bond2);
 
             osc.update_v1(bs);
             osc.impulse_Dv(bs, r);
