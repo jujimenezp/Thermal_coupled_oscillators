@@ -8,8 +8,8 @@ mpl.rcParams['mathtext.fontset'] = 'stix'
 mpl.rcParams['font.family'] = 'STIXGeneral'
 mpl.rcParams['agg.path.chunksize'] = 10000
 
-data_pos = pd.read_csv('results/coupled_pos.dat', delimiter='\t')
-data_w = pd.read_csv('results/coupled_w.dat', delimiter='\t')
+data_pos = pd.read_csv('results/coupled2_pos.dat', delimiter='\t')
+data_w = pd.read_csv('results/coupled2_w.dat', delimiter='\t')
 fig = plt.figure(layout='tight')
 gs = fig.add_gridspec(2,2)
 ax = []

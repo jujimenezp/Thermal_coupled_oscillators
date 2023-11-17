@@ -14,9 +14,10 @@ def gaussian(x,avg,variance,A):
     return y
 
 bins = int(sys.argv[1])
-names = ['v1_48','v5_48','v10_48','v20_48','v30_48']
-#names =['eq']
-colors = ['blue', 'red', 'green', 'orange', 'violet', 'yellow']
+names = ['v1_48','v5_48','v10_48', 'v15_48','v20_48', 'v30_48']
+#names =['v30_48']
+colors = ['blue', 'red', 'green', 'orange', 'brown', 'violet']
+
 
 data_un = []
 data_re = []
@@ -36,7 +37,7 @@ print(avg_un[0])
 print(avg_re[0])
 
 x=np.arange(-30,60,0.1)
-x1 = np.arange(-30,60,2)
+x1 = np.arange(-10,10,2)
 
 heights_un=[]
 heights_re=[]
@@ -56,7 +57,7 @@ for i in range(len(names)):
     heights_re.append(bin_heights.max())
     ax[0].plot(x,gaussian(x,avg_re[i],var_re[i],heights_re[i]), color=colors[i], linestyle='--')
     y = np.log(gaussian(x1,avg_re[i],var_re[i],heights_re[i])/gaussian(x1,avg_un[i],var_un[i],heights_un[i]))
-    ax[1].scatter(x1,y,color=colors[i],s=2)
+    ax[1].plot(x1,y,color=colors[i])
 
 ax[0].legend()
 

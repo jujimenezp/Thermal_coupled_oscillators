@@ -8,7 +8,7 @@ import matplotlib as mpl
 mpl.rcParams['mathtext.fontset'] = 'stix'
 mpl.rcParams['font.family'] = 'STIXGeneral'
 
-data = pd.read_csv('results/jarzynski_v1_48.dat', delimiter='\t', header=None)
+data = pd.read_csv('results/jarzynski_v10_48.dat', delimiter='\t', header=None)
 #data_eq = pd.read_csv('results/jarzynski_eq.dat', delimiter='\t', header=None)
 
 # data.drop_duplicates(0, inplace=True)
@@ -39,4 +39,4 @@ ax[1].set_ylabel('Work')
 ax[1].plot(data.iloc[:,0],data.iloc[:,2], color='blue')
 
 plt.show()
-#plt.savefig('results/bustamante1.png',format='png',bbox_inches='tight',dpi=600)
+#plt.savefig('results/jarzynski2_T0_25.png',format='png',bbox_inches='tight',dpi=600)
