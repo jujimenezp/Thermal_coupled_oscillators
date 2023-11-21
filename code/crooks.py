@@ -10,17 +10,19 @@ import matplotlib.patches as mpatches
 mpl.rcParams['mathtext.fontset'] = 'stix'
 mpl.rcParams['font.family'] = 'STIXGeneral'
 
-def gaussian(x,avg,variance,A):
-    y = A*np.exp(-0.5*np.power(x-avg,2)/variance)
+def gaussian(x,avg,variance):
+    y = (1/np.sqrt(2*np.pi*variance))*np.exp(-0.5*np.power(x-avg,2)/variance)
     return y
 
+T=4
 bins = int(sys.argv[1])
 
-names = ['v1_48','v25_480','v5_48','v75_480','v10_48', 'v15_48','v30_48']
-labels = ['v1/48','v25/480','v5/48','v75/480','v10/48', 'v15/48','v30/48']
-#names = ['v1_48','v5_48','v75_480','v10_48', 'v15_48','v30_48']
+#names = ['v1_48','v5_48','v10_48','v30_48']
+#labels =  ['v1_48','v5_48','v10_48','v30_48']
+names = ['v1_48','v5_48','v75_480','v10_48','v15_48','v20_48','v30_48']
+labels = ['v1_48','v5_48','v75_480','v10_48','v15_48','v20_48','v30_48']
 #names =['v75_480']
-colors = ['blue', 'red', 'green', 'orange', 'steelblue','gold', 'violet', 'brown', 'purple']
+colors = ['blue', 'red', 'green', 'orange', 'violet','gold', 'purple', 'brown', 'purple']
 patches = []
 
 
@@ -50,37 +52,37 @@ borders=[]
 
 fig, ax = plt.subplots(layout='tight')
 
-ax.set_title('Histogramas de trabajo',fontsize=14)
-ax.set_xlabel('Trabajo', fontsize=10)
+# ax.set_title('Histogramas de trabajo',fontsize=14)
+# ax.set_xlabel('Trabajo', fontsize=10)
 ax.grid()
-# ax.set_xlabel(r'Trabajo $W$',fontsize=10)
-# ax.set_ylabel(r'ln$\frac{W_{re}}{-W_{un}}$',fontsize=14)
+ax.set_xlabel(r'Trabajo $W$',fontsize=10)
+ax.set_ylabel(r'ln$\frac{W_{re}}{-W_{un}}$',fontsize=14)
 
 line = mpl.lines.Line2D([],[],color='black', linestyle='-', label = 'Despliegue')
 line2 = mpl.lines.Line2D([],[],color='black', linestyle='--', label = 'Repliegue')
 lines = [line, line2]
 
 # ax.axhline(0,linestyle='dashed',color='black', linewidth=1)
-# ax.axvline(13.0986,linestyle='dashed',color='black', linewidth=1, label='x=13.0986')
-# ax.text(13.0986,0.6, 'x=13.0986', rotation=-90, fontsize=8)
+# ax.axvline(0,linestyle='dashed',color='black', linewidth=1)
+#ax.text(-0.5,0.6, 'x=0', rotation=90, fontsize=11)
 
 for i in range(len(names)):
     bins_un = np.histogram_bin_edges(data_un[i],bins='fd')
     bins_re = np.histogram_bin_edges(data_re[i],bins='fd')
     patches.append(mpatches.Patch(color=colors[i], label=labels[i]))
-    bin_heights, bin_borders_un,_ = ax.hist(data_un[i], bins_un, density=True, histtype='step', color=colors[i])
-#    bin_heights, bin_borders_un = np.histogram(data_un[i], bins, density=True)
+#    bin_heights, bin_borders_un,_ = ax.hist(data_un[i], bins, density=True, histtype='step', color=colors[i])
+    bin_heights, bin_borders_un = np.histogram(data_un[i], bins, density=True)
     heights_un.append(bin_heights.max())
-    ax.plot(x,gaussian(x,avg_un[i],var_un[i],heights_un[i]), color=colors[i], linewidth=1)
-    bin_heights, bin_borders_re,_ = ax.hist(data_re[i], bins_re, density=True, histtype='step', color=colors[i], linestyle='--')
-#    bin_heights, bin_borders_re = np.histogram(data_re[i], bins, density=True)
+#    ax.plot(x,gaussian(x,avg_un[i],var_un[i]), color=colors[i], linewidth=1)
+#    bin_heights, bin_borders_re,_ = ax.hist(data_re[i], bins, density=True, histtype='step', color=colors[i], linestyle='--')
+    bin_heights, bin_borders_re = np.histogram(data_re[i], bins, density=True)
     heights_re.append(bin_heights.max())
-    ax.plot(x,gaussian(x,avg_re[i],var_re[i],heights_re[i]), color=colors[i], linestyle='--', linewidth=1)
-    # y = np.log(gaussian(x1,avg_re[i],var_re[i],heights_re[i])/gaussian(x1,avg_un[i],var_un[i],heights_un[i]))
-    # ax.plot(x1,y,color=colors[i])
+#    ax.plot(x,gaussian(x,avg_re[i],var_re[i]), color=colors[i], linestyle='--', linewidth=1)
+    y = T*np.log(gaussian(x1,avg_re[i],var_re[i])/gaussian(x1,avg_un[i],var_un[i]))
+    ax.plot(x1,y,color=colors[i])
 
 ax.legend(handles=lines+patches)
 
 
-#plt.show()
-plt.savefig('results/crooks1.png', format='png', bbox_inches='tight', dpi=600)
+plt.show()
+#plt.savefig('results/crooks.png', format='png', bbox_inches='tight', dpi=600)
