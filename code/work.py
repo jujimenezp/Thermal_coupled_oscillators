@@ -9,8 +9,8 @@ mpl.rcParams['font.family'] = 'STIXGeneral'
 mpl.rcParams['agg.path.chunksize'] = 10000
 #mpl.rcParams['figure.figsize'] = 6, 10
 
-data_pos = pd.read_csv('results/coupled_pos3.dat', delimiter='\t', header=None)
-data_w = pd.read_csv('results/coupled_w3.dat', delimiter='\t', header=None)
+data_pos = pd.read_csv('results/coupled_pos.dat', delimiter='\t', header=None)
+data_w = pd.read_csv('results/coupled_w.dat', delimiter='\t', header=None)
 try:
     w1, w2 = np.split(data_w,2)
 except:
@@ -54,5 +54,5 @@ ax.set_ylabel('Posición')
 # ax[1].set_ylabel('Trabajo')
 
 
-#plt.show()
-plt.savefig('results/Una_trayectoria2.png',format='png',bbox_inches='tight',dpi=300)
+plt.show()
+#plt.savefig('results/Una_trayectoria2.png',format='png',bbox_inches='tight',dpi=300)

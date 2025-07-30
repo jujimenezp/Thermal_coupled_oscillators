@@ -32,5 +32,5 @@ ax[2].grid()
 ax[2].set_title(r'$x_{c}=-3$')
 ax[1].legend()
 
-#plt.show()
-plt.savefig('results/hist_work.png', format='png',bbox_inches='tight',dpi=300)
+plt.show()
+#plt.savefig('results/hist_work.png', format='png',bbox_inches='tight',dpi=300)
